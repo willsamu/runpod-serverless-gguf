@@ -1,6 +1,7 @@
 import runpod
 import os
 import time
+import json
 from llama_cpp import Llama
 
 # Prepare the model and tokenizer
@@ -78,10 +79,10 @@ def handler(event):
     usage = output["usage"]
     
 
-    return {
-            result, 
-            usage
-        }
+    return json.dumps({
+                result, 
+                usage
+            })
 
 
 runpod.serverless.start({
