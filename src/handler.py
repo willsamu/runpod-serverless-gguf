@@ -83,10 +83,9 @@ def handler(event):
     }
 
     return json.dumps({
-                result, 
-                usage
-            })
-
+        "result": result, 
+        "usage": usage
+    })
 
 runpod.serverless.start({
     "handler": handler
