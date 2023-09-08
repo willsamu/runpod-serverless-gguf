@@ -1,19 +1,18 @@
 import runpod
 import os
 import time
+from llama_cpp import Llama
 
-sleep_time = int(os.environ.get('SLEEP_TIME', 3))
+llm = Llama(model_path="./models/7B/ggml-model.bin")
 
 ## load your model(s) into vram here
 
 def handler(event):
     print(event)
-    time_slept = 0
-    while time_slept < sleep_time:
-        print("working, I promise")
-        time_slept += 1
-        time.sleep(1)
     # do the things
+    output = llm("Q: Name the planets in the solar system? A: ", max_tokens=32, stop=["Q:", "\n"], echo=True)
+    print(output)
+    
 
     return "Hello World"
 
