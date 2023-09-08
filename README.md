@@ -4,7 +4,7 @@ Builds docker image for runpod serverless containers based on GGUF models from h
 
 As of now, only supports models without split files (due to Huggingface limitation < 50GB).
 
-## Usage
+## Building
 
 ```bash
 export DOCKER_BUILDKIT=1 # Important to activate buildkit
@@ -14,3 +14,34 @@ export HF_TOKEN=your_hugging_face_token_here
 
 docker build -t runpod-images:dev . --platform linux/amd64 --build-arg HUGGING_FACE_HUB_TOKEN=$HF_TOKEN --build-arg MODEL_NAME=$MODEL --build-arg QUANTITIZATION=$QUANTITIZATION
 ```
+
+If model is a 70b parameter model, the following build arg must be added:
+
+```bash
+--build-arg IS_70B=True
+```
+
+## Testing Image
+
+Create file `test_input.json` with input values for the model:
+
+```json
+{
+  "input": {
+    "your_model_input_key": "your_model_input_value"
+  }
+}
+```
+
+To run the image with the input:
+
+```bash
+docker run -v $(pwd)/test_input.json:/test_input.json runpod-images:dev
+```
+
+## Usage
+
+Following environment variables are available:
+
+- `N_CTX`: Context Size
+- `NUM_GPU_SHARD`: Number of GPU shards.

@@ -10,6 +10,16 @@ STREAMING = os.environ.get('STREAMING', False) == 'True'
 TOKENIZER = os.environ.get('TOKENIZER', None)
 USE_FULL_METRICS = os.environ.get('USE_FULL_METRICS', True)
 
+# ? Optional Parameters which are set via environment
+IS_70B = os.environ.get('IS_70B', False) == 'True'
+
+# ? Optional Parameters which are set via environment
+n_ctx = 1500
+try:
+    n_ctx = int(os.environ.get('N_CTX'))
+except ValueError:
+    print("N_CTX must be an integer")
+
 if not MODEL_NAME:
     print("Error: The model has not been provided.")
 
@@ -30,21 +40,47 @@ if len(files) == 1:
 else:
     print("There's either no file or more than one file in the directory: ", model_file, files)
 
+# ? Required to load 70 Models. See: https://github.com/abetlen/llama-cpp-python#loading-llama-2-70b
+loading_kwargs = {}
+if IS_70B:
+    loading_kwargs["n_gqa"] = 8
+
+loading_kwargs["n_ctx"] = n_ctx
+
 llm = Llama(
         model_path=model_file, 
-        n_gpu_layers=1, # Offload all layers to GPU
+        n_gpu_layers=NUM_GPU_SHARD, # Offload all layers to GPU
+        **loading_kwargs
         )
 
 ## load your model(s) into vram here
 
 def handler(event):
-    print(event)
-    # do the things
-    output = llm("Q: Name the planets in the solar system? A: ", max_tokens=32, stop=["Q:", "\n"], echo=True)
+    print("Job received by handler: {}".format(event))
+    input = event['input']
+
+    # ? Parse Inputs
+    max_tokens = input.get('max_tokens', 200)
+    stop = input.get('stop', ["Q:", "\n"])
+    prompt = input.get('prompt', None)
+
+    if prompt is None:
+        return {
+            "error": "Prompt is required."
+        }
+
+    # ? Generate Response
+    output = llm(prompt, max_tokens=max_tokens, stop=stop, echo=True)
+    
     print(output)
+    result = output["choices"][0]["text"]
+    usage = output["usage"]
     
 
-    return "Hello World"
+    return {
+            result, 
+            usage
+        }
 
 
 runpod.serverless.start({
