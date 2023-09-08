@@ -45,9 +45,10 @@ ARG MODEL_REVISION="main"
 ENV MODEL_REVISION=$MODEL_REVISION
 ARG MODEL_BASE_PATH="/runpod-volume/"
 ENV MODEL_BASE_PATH=$MODEL_BASE_PATH
-ARG TOKENIZER=
-ENV TOKENIZER=$TOKENIZER # ? Do we need this actually? Should be included
-ARG STREAMING=
+ARG TOKENIZER=""
+# ? Do we need this actually? Should be included
+ENV TOKENIZER=$TOKENIZER 
+ARG STREAMING=""
 ENV STREAMING=$STREAMING
 ARG QUANTITIZATION=""
 ENV QUANTITIZATION=$QUANTITIZATION
@@ -66,6 +67,7 @@ ENV MODEL_NAME=$MODEL_NAME \
     HUGGING_FACE_HUB_TOKEN=$HUGGING_FACE_HUB_TOKEN
 
 # Run the Python script to download the model
+COPY builder/download_model.py /download_model.py
 RUN python -u /download_model.py
 
 # Add src files (Worker Template)
