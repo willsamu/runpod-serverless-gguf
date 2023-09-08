@@ -17,8 +17,9 @@ IS_70B = os.environ.get('IS_70B', False) == 'True'
 n_ctx = 1500
 try:
     n_ctx = int(os.environ.get('N_CTX'))
-except ValueError:
-    print("N_CTX must be an integer")
+except Exception as e:
+    print("N_CTX must be given and an integer")
+    
 
 if not MODEL_NAME:
     print("Error: The model has not been provided.")
@@ -26,8 +27,8 @@ if not MODEL_NAME:
 # Tensor parallelism
 try:
     NUM_GPU_SHARD = int(os.environ.get('NUM_GPU_SHARD', 1))
-except ValueError:
-    print("Error: NUM_GPU_SHARD should be an integer. Using default value of 1.")
+except Exception as e:
+    print("Error: NUM_GPU_SHARD should be existend and an integer. Using default value of 1.")
     NUM_GPU_SHARD = 1
 
 # ? Get Model file - curretnly only supports exactly one file
