@@ -76,7 +76,7 @@ def handler(event):
     
     print(output)
     result = output["choices"][0]["text"]
-    usage = output["usage"]
+    usage = tuple(output["usage"])
     
 
     return json.dumps({
