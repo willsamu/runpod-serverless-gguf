@@ -27,8 +27,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --upgrade -r /requirements.txt --no-cache-dir && \
     rm /requirements.txt
 
-# Add src files (Worker Template)
-ADD src .  
 
 # Quick temporary updates
 RUN pip install git+https://github.com/runpod/runpod-python@a1#egg=runpod --compile
@@ -48,7 +46,7 @@ ENV MODEL_REVISION=$MODEL_REVISION
 ARG MODEL_BASE_PATH="/runpod-volume/"
 ENV MODEL_BASE_PATH=$MODEL_BASE_PATH
 ARG TOKENIZER=
-ENV TOKENIZER=$TOKENIZER
+ENV TOKENIZER=$TOKENIZER # ? Do we need this actually? Should be included
 ARG STREAMING=
 ENV STREAMING=$STREAMING
 ARG QUANTITIZATION=""
@@ -69,6 +67,10 @@ ENV MODEL_NAME=$MODEL_NAME \
 
 # Run the Python script to download the model
 RUN python -u /download_model.py
+
+# Add src files (Worker Template)
+# * Only do after model download for efficient caching
+ADD src .  
 
 # Start the handler
 CMD STREAMING=$STREAMING MODEL_NAME=$MODEL_NAME MODEL_BASE_PATH=$MODEL_BASE_PATH TOKENIZER=$TOKENIZER python -u /handler.py 
