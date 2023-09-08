@@ -28,7 +28,9 @@ Create file `test_input.json` with input values for the model:
 ```json
 {
   "input": {
-    "your_model_input_key": "your_model_input_value"
+    "prompt": "Q: What is Python?\nA:",
+    "stop": ["Q:", "\n"],
+    "max_tokens": 50
   }
 }
 ```
@@ -45,3 +47,13 @@ Following environment variables are available:
 
 - `N_CTX`: Context Size
 - `NUM_GPU_SHARD`: Number of GPU shards.
+
+The POST Request input should have the structure of the `input` key in the test file:
+
+```json
+{
+  "prompt": "Q: What is Python?\nA:",
+  "stop": ["Q:", "\n"],
+  "max_tokens": 50
+}
+```
