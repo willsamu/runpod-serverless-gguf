@@ -22,14 +22,14 @@ download_kwargs = {}
 if HUGGING_FACE_HUB_TOKEN:
     download_kwargs["token"] = HUGGING_FACE_HUB_TOKEN
 
-allowed_patterns = f"*{QUANTITIZATION}*" if QUANTITIZATION else "*", # ? If quantitization is true, then only download the quantitization model weights
+allowed_patterns = f"*{QUANTITIZATION}*" if QUANTITIZATION else "*" # ? If quantitization is true, then only download the quantitization model weights
 print("Downloading model from hugging face hub with allowed patterns: ", allowed_patterns)
 
 snapshot_download(
     repo_id=MODEL_NAME,
     revision=MODEL_REVISION,
     local_dir=f"{MODEL_BASE_PATH}{MODEL_NAME.split('/')[1]}",
-    allow_patterns=allowed_patterns
+    allow_patterns=allowed_patterns,
     **download_kwargs
 )
 
