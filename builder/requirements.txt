@@ -1,0 +1,5 @@
+# Required Python packages get listed here, one per line.
+# Recomended to lock the version number to avoid unexpected changes.
+fastapi==0.99.1
+huggingface-hub==0.16.4
+runpod @ git+https://github.com/runpod/runpod-python@main#egg=runpod 
