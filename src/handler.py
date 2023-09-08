@@ -76,8 +76,11 @@ def handler(event):
     
     print(output)
     result = output["choices"][0]["text"]
-    usage = tuple(output["usage"])
-    
+    usage = {
+            "prompt_tokens": output["usage"]["prompt_tokens"],
+            "completion_tokens": output["usage"]["completion_tokens"],
+            "total_tokens": output["usage"]["total_tokens"],
+    }
 
     return json.dumps({
                 result, 
