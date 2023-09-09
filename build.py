@@ -9,6 +9,9 @@ IS_70B_input = input("Enter IS_70B (yes/no, default: no): ").lower() or "no"
 IS_70B = "True" if IS_70B_input == "yes" else "False"
 HF_TOKEN = input("Enter HF_TOKEN:")
 REPOSITORY_NAME = input("Enter REPOSITORY_NAME (default: myuser/my-test-image): ") or "myuser/my-test-image"
+PUSH_IMAGE_input = input("Push Image to repository (yes/no, default: no): ").lower() or "no"
+PUSH_IMAGE = True if PUSH_IMAGE_input == "yes" else False
+
 
 # Build IMAGE_NAME
 model_user = MODEL.split('/')[0].replace("-", "").lower()
@@ -20,3 +23,7 @@ print(f"Building Image: {IMAGE_NAME}")
 # Invoke Docker command
 cmd = f"DOCKER_BUILDKIT=1 docker build -t {IMAGE_NAME} . --platform linux/amd64 --build-arg HUGGING_FACE_HUB_TOKEN={HF_TOKEN} --build-arg MODEL_NAME={MODEL} --build-arg QUANTITIZATION={QUANTITIZATION} --build-arg IS_70B={IS_70B}"
 subprocess.run(cmd, shell=True)
+
+if PUSH_IMAGE:
+    cmd = f"docker push {IMAGE_NAME}"
+    subprocess.run(cmd, shell=True)

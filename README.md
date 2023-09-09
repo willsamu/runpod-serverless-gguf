@@ -15,6 +15,7 @@ Enter QUANTITIZATION (default: Q5_K_S):
 Enter IS_70B (yes/no, default: no):
 Enter HF_TOKEN:
 Enter REPOSITORY_NAME (default: myuser/my-test-image):
+Push Image to repository (yes/no, default: no):
 Building Image: myuser/my-test-image:thebloke-codellama-34b-instruct-gguf-Q5_K_S-CUBLAS
 ```
 
