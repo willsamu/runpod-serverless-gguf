@@ -31,8 +31,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Quick temporary updates
 RUN pip install git+https://github.com/runpod/runpod-python@a1#egg=runpod --compile
 
-# ? (Re-)Install llama-cpp-python. See: https://pypi.org/project/llama-cpp-python/
-RUN pip install llama-cpp-python --force-reinstall --upgrade --no-cache-dir
+# ? Build llama-cpp-python. See: https://pypi.org/project/llama-cpp-python/
+# Install like this for cuBLAS as target is NVIDIA GPUs
+RUN CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install llama-cpp-python
 
 # Prepare the models inside the docker image
 ARG HUGGING_FACE_HUB_TOKEN=
