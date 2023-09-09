@@ -6,6 +6,20 @@ As of now, only supports models without split files (due to Huggingface limitati
 
 ## Building
 
+To build the easy way, use the python script and dynamically input the parameters:
+
+```bash
+$ python build.py
+Enter MODEL (default: TheBloke/CodeLlama-34B-Instruct-GGUF):
+Enter QUANTITIZATION (default: Q5_K_S):
+Enter IS_70B (yes/no, default: no):
+Enter HF_TOKEN:
+Enter REPOSITORY_NAME (default: myuser/my-test-image):
+Building Image: myuser/my-test-image:thebloke-codellama-34b-instruct-gguf-Q5_K_S-CUBLAS
+```
+
+Alternatively, build it yourself:
+
 ```bash
 export DOCKER_BUILDKIT=1 # Important to activate buildkit
 export MODEL=TheBloke/CodeLlama-34B-Instruct-GGUF # Repository name, make sure .gguf files are existend
