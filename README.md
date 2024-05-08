@@ -1,3 +1,6 @@
+# Important Notice
+> This repository is a POC to implement GGUF handlers for runpod serverless. However, it is very buggy and has been discarded, as vLLM implemented AWQ support. In order to run quantized LLMs, I highly recommend to use https://github.com/runpod-workers/worker-vllm with AWQ quantization.
+
 # Runpod Serverless GGUF
 
 Builds docker image for runpod serverless containers based on GGUF models from huggingface.
